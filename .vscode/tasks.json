@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "ReadyGo 자동 시험",
+            "type": "shell",
+            "windows": { "command": "tests\\run_tests.bat" },
+            "linux": { "command": "sh tests/run_tests.sh" },
+            "osx": { "command": "sh tests/run_tests.sh" },
+            "options": { "cwd": "${workspaceFolder}" },
+            "group": "test",
+            "problemMatcher": []
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+# C-10
+# 실행: java -Decho=true -cp out;out/tests readygo.TestMain .\tests\fixtures\dup_hour.csv
+# 입력: 
+# 종료 코드: 0
+
+============================================================
+ ReadyGo - 날씨 보고 외출 준비하기
+============================================================
+[오류] 날씨 데이터를 불러오지 못했습니다.
+       C:\Users\kimeu\OneDrive - 가천대학교\바탕 화면\01_가천대학교\자바\프로젝트\readygo\tests\fixtures\dup_hour.csv 5번째 줄: 1시가 두 번 나왔습니다 (같은 시각 중복)
+프로그램을 종료합니다.

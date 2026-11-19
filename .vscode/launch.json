@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "ReadyGo (기상청 API - 서울)",
+            "request": "launch",
+            "mainClass": "readygo.Main",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "args": ["서울"]
+        },
+        {
+            "type": "java",
+            "name": "ReadyGo (기상청 API - 지역 입력)",
+            "request": "launch",
+            "mainClass": "readygo.Main",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "args": "${input:region}"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "region",
+            "type": "promptString",
+            "description": "지역 이름을 입력하세요 (예: 서울, 부산, 대구)",
+            "default": "서울"
+        }
+    ]
+}

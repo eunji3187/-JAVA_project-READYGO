@@ -1,0 +1,199 @@
+ReadyGo 자동 시험 결과  2026-11-19 13:34:00
+Java 25.0.4.1
+
+[U-01] 체감온도: 기상청 여름철 산출식 (35°C·56% → 35.1, 17°C·70% → 18.2)
+    PASS  35°C 56% = 35.1
+    PASS  17°C 70% = 18.2
+[U-02] 강수형태 판정과 이름 (비: 1·2·4, 눈: 2·3)
+    PASS  pty 0 isRainType = false
+    PASS  pty 0 isSnowType = false
+    PASS  pty 0 이름 = 없음
+    PASS  pty 1 isRainType = true
+    PASS  pty 1 isSnowType = false
+    PASS  pty 1 이름 = 비
+    PASS  pty 2 isRainType = true
+    PASS  pty 2 isSnowType = true
+    PASS  pty 2 이름 = 비/눈
+    PASS  pty 3 isRainType = false
+    PASS  pty 3 isSnowType = true
+    PASS  pty 3 이름 = 눈
+    PASS  pty 4 isRainType = true
+    PASS  pty 4 isSnowType = false
+    PASS  pty 4 이름 = 소나기
+[U-03] 옷차림 구간 경계: 모든 정수 기온이 7개 구간 중 하나에 속함
+    PASS  2°C = FREEZING
+    PASS  3°C = COLD
+    PASS  10°C = COLD
+    PASS  11°C = COOL
+    PASS  14°C = COOL
+    PASS  15°C = MILD
+    PASS  19°C = MILD
+    PASS  20°C = WARM
+    PASS  경계 Integer.MIN_VALUE = FREEZING
+    PASS  경계 22 = WARM
+    PASS  경계 23 = HOT
+    PASS  경계 27 = HOT
+    PASS  경계 28 = VERY_HOT
+    PASS  경계 Integer.MAX_VALUE = VERY_HOT
+[U-04] 목적 메뉴는 3개 (잠깐 외출 제외)
+    PASS  selectable = [STUDY, WORK, SHOPPING]
+    PASS  QUICK 준비물 없음 = true
+[U-05] 일정 검사: hours(), 역순·범위 밖이면 IllegalArgumentException
+    PASS  9~21 hours = 13
+    PASS  10~10 hours = 1
+    PASS  21~9 역순 → IllegalArgumentException
+    PASS  24시 → IllegalArgumentException
+    PASS  -1시 → IllegalArgumentException
+[U-06] Recommendation: 중복 준비물은 false, 순서 유지, 목록은 수정 불가
+    PASS  첫 물병 = true
+    PASS  두 번째 물병 = false
+    PASS  순서 = [물병, 우산]
+    PASS  items 수정 → UnsupportedOperationException
+    PASS  reasons 수정 → UnsupportedOperationException
+    PASS  복장 없음 → 빈 Optional = Optional.empty
+[U-07] CSV 로드: 대표 시나리오 A (지역, 24시간, 15시 값)
+    PASS  지역 = 서울
+    PASS  시간 수 = 24
+    PASS  15시 = Optional[HourlyWeather[hour=15, temp=17, pop=60, pty=1, humidity=70]]
+[U-08] CSV 로드: BOM·CRLF·빈 줄·칸 사이 공백 허용
+    PASS  지역 = 부산
+    PASS  10시 = Optional[HourlyWeather[hour=10, temp=16, pop=20, pty=0, humidity=50]]
+    PASS  시간 수 = 2
+[U-09] CSV 오류: 몇 번째 줄인지 담아 WeatherLoadException
+    PASS  파일 없음 → 날씨 파일을 찾을 수 없습니다: tests\data\no_such_file.csv
+    PASS  칸 수 → .\tests\fixtures\bad_columns.csv 4번째 줄: 칸이 5개여야 하는데 4개입니다
+    PASS  숫자 → .\tests\fixtures\bad_number.csv 4번째 줄: 기온 값 'seven'을(를) 정수로 바꿀 수 없습니다
+    PASS  강수형태 범위 → .\tests\fixtures\bad_range_pty.csv 4번째 줄: 강수형태 값 5이(가) 범위(0~4) 밖입니다
+    PASS  시각 범위 → .\tests\fixtures\bad_range_hour.csv 5번째 줄: 시각 값 24이(가) 범위(0~23) 밖입니다
+    PASS  시각 중복 → .\tests\fixtures\dup_hour.csv 5번째 줄: 1시가 두 번 나왔습니다 (같은 시각 중복)
+    PASS  데이터 없음 → .\tests\fixtures\empty.csv: 날씨 데이터 줄이 하나도 없습니다
+[U-10] DailyWeather.range(): 누락 시각을 메시지에 담아 MissingWeatherDataException
+    PASS  누락 시각 = 누락: [12]시
+    PASS  메시지 = 누락: [12]시
+    PASS  누락 시각 0~23 = 누락: [3, 12]시
+    PASS  13~18 시간 수 = 6
+[U-11] 분석: 대표 시나리오 A 9~21시 요약값
+    PASS  최저 기온 = 9
+    PASS  최저 시각 = 9
+    PASS  최고 기온 = 17
+    PASS  최고 시각(같으면 이른 시각) = 14
+    PASS  기온 차 = 8
+    PASS  최대 강수확률 = 70
+    PASS  강수 시각 = [15, 16, 17]
+    PASS  최고 체감온도 = 18.2
+    PASS  최고 체감 시각 = 15
+    PASS  비 예상 = true
+    PASS  눈 예상 = false
+[U-12] 추천: 대표 시나리오 A 최종값 (복장 3종, 준비물 8개, 이유 5줄, 안내 0줄)
+    PASS  상의 = Optional[긴팔 티셔츠·얇은 니트]
+    PASS  겉옷 = Optional[코트·경량 패딩·두꺼운 재킷]
+    PASS  하의·신발 = Optional[슬랙스·청바지·로퍼]
+    PASS  준비물 = [휴대폰, 지갑, 열쇠, 노트북, 충전기, 필기구, 우산, 장화]
+    PASS  이유 줄 수 = 5
+    PASS  안내 줄 수 = 0
+[U-13] 폭염 규칙: 기준 33°C, 목적에 물병이 있으면 중복 추가하지 않음
+    PASS  기준값 = 33.0
+    PASS  출근: 물병 1개 = 1
+    PASS  출근: 중복 이유 = true
+    PASS  쇼핑: 물병 추가 = true
+    PASS  쇼핑: 우산 없음 = false
+    PASS  폭염 상의 = Optional[통풍이 좋은 반팔·린넨 셔츠]
+    PASS  복장 누락 안내 없음 = 0
+[U-14] 강수 규칙: 눈만 오면 우산 O·장화 X·폭설 미적용 안내 / 강수형태 없음이면 우산만
+    PASS  우산 = true
+    PASS  장화 = false
+    PASS  폭설 안내 = true
+    PASS  D 13~18 우산 = true
+    PASS  D 13~18 장화 = false
+    PASS  기준 50% = 50
+[C-01] 대표 시나리오 A, 9~21시 공부 → n이면 이유 출력, 안내 0건이면 [안내] 생략
+    PASS  출력에 포함: [서울] 오늘의 날씨 (24시간 중 24시간 데이터)
+    PASS  출력에 포함: 최저 6°C (03시) · 최고 17°C (14시) · 일교차 11°C
+    PASS  출력에 포함: === 외출 구간 요약: 09시 ~ 21시 (13시간, 공부) ===
+    PASS  출력에 포함: 최저 기온     : 9°C (09시)
+    PASS  출력에 포함: 최고 기온     : 17°C (14시)
+    PASS  출력에 포함: 기온 차       : 8°C
+    PASS  출력에 포함: 최대 강수확률 : 70%
+    PASS  출력에 포함: 15시(비 60%), 16시(비 70%), 17시(비 60%)
+    PASS  출력에 포함: 최고 체감온도 : 18.2°C (15시)
+    PASS  출력에 포함: 상의      : 긴팔 티셔츠·얇은 니트
+    PASS  출력에 포함: 겉옷      : 코트·경량 패딩·두꺼운 재킷
+    PASS  출력에 포함: 하의·신발 : 슬랙스·청바지·로퍼
+    PASS  출력에 포함: [준비물] 8개
+    PASS  출력에 포함: 휴대폰, 지갑, 열쇠, 노트북, 충전기, 필기구, 우산, 장화
+    PASS  출력에 포함:   5. 15·16·17시 비 예보 → 장화
+    PASS  출력에 없음:   6. 
+    PASS  출력에 없음: [안내]
+    PASS  출력에 포함: 종료하시겠습니까? (y/n): n
+    PASS  출력 순서: [복장] → [준비물] → 종료하시겠습니까? (y/n) → [이유] → 프로그램을 종료합니다.
+[C-02] 종료 질문에서 입력이 끝나도 정상 종료 + 본 프로그램(Main)은 지원하지 않는 지역을 거절
+    PASS  출력에 포함: [서울] 오늘의 날씨
+    PASS  출력에 포함: [준비물] 8개
+    PASS  출력에 포함: [안내] 입력이 끝나서 프로그램을 종료합니다.
+    PASS  출력에 없음: [이유]
+    PASS  출력에 없음: Exception
+    PASS  출력에 포함: [오류] 지원하지 않는 지역: 없는지역
+    PASS  출력에 포함: 지원 지역: 서울
+    PASS  출력에 없음: Exception
+[C-03] 더운 날: 폭염 복장, 물병 중복 추가 안 함, 우산 제외
+    PASS  출력에 포함: 최고 체감온도 : 35.1°C (14시)
+    PASS  출력에 포함: → 물병은 이미 준비물에 있어 중복 추가하지 않음
+    PASS  출력에 포함: 최대 강수확률 30%로 50% 미만 → 우산 제외
+    PASS  출력에 포함: 상의      : 통풍이 좋은 반팔·린넨 셔츠
+    PASS  출력에 포함: 겉옷      : 별도 겉옷 불필요
+    PASS  출력에 포함: [준비물] 6개
+[C-04] 추운 날: 방한 겉옷, 눈 예보면 우산만·폭설 안내
+    PASS  출력에 포함: [강릉] 오늘의 날씨
+    PASS  출력에 포함: 10·11·12·13·14시 강수확률 50% 이상(최대 80%) → 우산
+    PASS  출력에 없음: 장화
+    PASS  출력에 포함: 적설량(폭설) 기준은 적용하지 않았으니
+    PASS  출력에 포함: 겉옷      : 두꺼운 패딩·방한 코트
+[C-05] 시나리오 D 9~21시 → "누락: [12]시" 후 분석 중단, 표에는 "데이터 없음"
+    PASS  출력에 포함: [인천] 오늘의 날씨 (24시간 중 22시간 데이터)
+    PASS  출력에 포함:  03시  데이터 없음
+    PASS  출력에 포함:  12시  데이터 없음
+    PASS  출력에 포함: 누락: [12]시
+    PASS  출력에 포함: 분석을 중단합니다
+    PASS  출력에 없음: === 추천 결과 ===
+[C-06] 시나리오 D 13~18시 쇼핑 → 누락 없는 구간은 정상 추천
+    PASS  출력에 포함: 강수 예상     : 15시(50%), 16시(50%)
+    PASS  출력에 포함: 상의      : 셔츠·얇은 니트
+    PASS  출력에 포함: 겉옷      : 트렌치코트·블레이저·데님 재킷
+    PASS  출력에 포함: [준비물] 7개
+    PASS  출력에 없음: 장화
+[C-07] 잘못된 입력 반복 질문: 글자·범위 밖·역순(처음부터)·같은 시각(잠깐 외출)
+    PASS  출력에 포함: 외출 시각(0~23): abc\n  숫자로 입력해 주세요. (0~23)
+    PASS  출력에 포함: 외출 시각(0~23): 25\n  0~23 사이로 입력해 주세요.
+    PASS  출력에 포함: 귀가 시각이 외출 시각보다 빠릅니다
+    PASS  출력에 포함: 처음부터 다시 입력해 주세요.
+    PASS  출력에 포함: 외출 시각과 귀가 시각이 같습니다 (10시).
+    PASS  출력에 포함: 선택(1~2): 3\n  1~2 사이로 입력해 주세요.
+    PASS  출력에 포함: === 외출 구간 요약: 10시 ~ 10시 (1시간, 잠깐 외출) ===
+    PASS  출력에 포함: [준비물] 3개
+    PASS  출력에 포함: 목적 '잠깐 외출' → 공통 준비물(휴대폰·지갑·열쇠)만
+    PASS  출력에 없음: 외출 목적을 고르세요.
+[C-08] 같은 시각 → 2번(다시 입력) → 목적 메뉴 범위 밖 재질문 → 출근
+    PASS  출력에 포함:   2. 처음부터 다시 입력
+    PASS  출력에 포함: 선택(1~3): 0\n  1~3 사이로 입력해 주세요.
+    PASS  출력에 포함: 선택(1~3): 4\n  1~3 사이로 입력해 주세요.
+    PASS  출력에 포함: === 외출 구간 요약: 09시 ~ 18시 (10시간, 출근) ===
+    PASS  출력에 포함: 사원증
+[C-09] 날씨 파일 없음 → 오류 출력 후 종료
+    PASS  출력에 포함: [오류] 날씨 데이터를 불러오지 못했습니다.
+    PASS  출력에 포함: 날씨 파일을 찾을 수 없습니다
+    PASS  출력에 포함: 프로그램을 종료합니다.
+    PASS  출력에 없음: 외출 시각
+[C-10] CSV 형식 오류 → 몇 번째 줄인지 출력 후 종료
+    PASS  출력에 포함: 5번째 줄: 1시가 두 번 나왔습니다
+    PASS  출력에 포함: 프로그램을 종료합니다.
+[C-11] 입력 도중 입력이 끝나면(EOF) 예외 없이 종료
+    PASS  출력에 포함: [안내] 입력이 끝나서 프로그램을 종료합니다.
+    PASS  출력에 없음: Exception
+[C-12] 종료 질문: y/n 외 입력은 재질문, y를 고르면 이유·안내 출력 없이 종료
+    PASS  출력에 포함: [준비물] 6개
+    PASS  출력에 포함: 종료하시겠습니까? (y/n): 5\n  y 또는 n으로 입력해 주세요.
+    PASS  출력에 없음: [이유]
+    PASS  출력에 없음: ! 최고 기온
+    PASS  출력에 포함: 프로그램을 종료합니다.
+
+합계: 시험 항목 26개 통과 / 0개 실패 (확인 168개 통과, 0개 실패)

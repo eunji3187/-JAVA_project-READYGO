@@ -1,0 +1,4 @@
+# 숫자 오류: 4번째 줄 기온이 글자
+hour,temp,pop,pty,humidity
+0,8,10,0,65
+1,seven,10,0,66
