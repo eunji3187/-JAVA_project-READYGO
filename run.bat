@@ -1,7 +1,7 @@
 @echo off
 rem ReadyGo run (Windows)
 rem   run.bat          Seoul (default region), KMA API
-rem   run.bat Busan    the given region (Korean name, e.g. 부산)
+rem   run.bat Busan    the given region (Korean region name)
 setlocal
 cd /d "%~dp0"
 
